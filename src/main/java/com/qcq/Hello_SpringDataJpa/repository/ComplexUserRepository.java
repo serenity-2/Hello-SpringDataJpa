@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * 带有分页和排序功能的接口
+ * 带有分页和排序功能的接口，需要继承PagingAndSortingRepository接口
  */
 @Component
 public interface ComplexUserRepository extends PagingAndSortingRepository<User,Integer> {

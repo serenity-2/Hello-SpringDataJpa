@@ -2,8 +2,9 @@ package com.qcq.Hello_SpringDataJpa;
 
 import com.qcq.Hello_SpringDataJpa.domain.User;
 import com.qcq.Hello_SpringDataJpa.repository.ComplexUserRepository;
+import com.qcq.Hello_SpringDataJpa.repository.UserOrderRelationRepository;
 import com.qcq.Hello_SpringDataJpa.repository.UserRepository;
-import lombok.Data;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class SpringDataJpaTest {
@@ -26,6 +25,9 @@ public class SpringDataJpaTest {
     private UserRepository userRepository;
     @Autowired
     private ComplexUserRepository complexUserRepository;
+    @Autowired
+    private UserOrderRelationRepository userOrderRelationRepository;
+
 
     @Test
     @DisplayName(value = "findById(ID id)")
@@ -54,18 +56,19 @@ public class SpringDataJpaTest {
      * save()方法在不指定主键的情况下，即实体对象的主键为null时，执行的是insert操作，
      * 而在指定主键的情况下，执行的操作为update操作，是将指定主键对应的那条记录的所有字段，更新为实体对象的每个对应属性的值，包括null值
      * 这种更新方法，会将有默认值且未给定值的字段给默认值null来插入库中，导致sql报错
-     * 解决方法1是先通过findById()方法查询出该条记录，然后再更新
+     * 解决方法一是先通过findById()方法查询出该条记录，然后再更新
      * 第二种方法是通过@Query注解来指定sql语句
+     * 方法三是在实体类里面给有默认值的字段直接赋值
      */
     @Test
     @DisplayName(value = "save(S entity)")
     public void test4() {
         User sanrio = new User();
-        sanrio = sanrio.setUserName("Sanrio Characters")
-                .setNickName("三丽鸥")
-                .setEmail("sanrio@gmail.com")
-                .setSex("F")
-                .setPhoneNumber("15800000000");
+        sanrio.setUserName("Sanrio Characters");
+        sanrio.setNickName("三丽鸥");
+        sanrio.setEmail("sanrio@gmail.com");
+        sanrio.setSex("F");
+        sanrio.setPhoneNumber("15800000000");
         //数据库里面没有，执行新增操作
         User user = userRepository.save(sanrio);
         Optional<User> userOptional = userRepository.findById(user.getUserId());
@@ -84,7 +87,7 @@ public class SpringDataJpaTest {
     @Test
     @DisplayName(value = "deleteById()")
     public void test5() {
-       userRepository.deleteById(25);
+        userRepository.deleteById(25);
     }
 
     /**
@@ -101,11 +104,14 @@ public class SpringDataJpaTest {
      */
     @Test
     @DisplayName(value = "findByUserNameAndPhoneNumber()")
-    public void  test7() {
+    public void test7() {
         User kuromi = userRepository.findByUserNameAndPhoneNumber("Kuromi", "15400000000");
         System.out.println(kuromi);
     }
 
+    /**
+     * JPA会根据方法名自动生成的sql
+     */
     @Test
     @DisplayName(value = "findByUserNameLike()")
     public void test8() {
@@ -134,7 +140,55 @@ public class SpringDataJpaTest {
         Pageable pageable = PageRequest.of(0, 3, Sort.by("createTime").reverse());
         Page<User> userPage = complexUserRepository.findAll(pageable);
         long total = userPage.getTotalElements();
+        int totalPages = userPage.getTotalPages();
+        int pageNumber = userPage.getNumber();
         List<User> userList = userPage.get().toList();
         userList.forEach(System.out::println);
+    }
+
+    /**
+     *    select
+     *         u1_0.id,
+     *         u1_0.create_by,
+     *         u1_0.create_time,
+     *         u1_0.email,
+     *         u1_0.nick_name,
+     *         u1_0.phone_number,
+     *         u1_0.sex,
+     *         u1_0.status,
+     *         u1_0.update_by,
+     *         u1_0.update_time,
+     *         u1_0.user_id,
+     *         u1_0.user_name,
+     *         uorl1_0.user_id,
+     *         uorl1_0.id,
+     *         uorl1_0.order_id
+     *     from
+     *         user u1_0
+     *     left join
+     *         user_order_relation uorl1_0
+     *             on u1_0.user_id=uorl1_0.user_id
+     *     where
+     *         u1_0.id=?
+     */
+    @Test
+    public void test11() {
+        Optional<User> userOptional = userRepository.findById(1);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            System.out.println(user);
+        }
+    }
+
+    /**
+     * SELECT * FROM user_order_relation uor
+     * WHERE uor.user_id = 1 AND uor.order_id = 1
+     * JOIN user u ON uor.user_id = u.user_id
+     * and u.status = 1;
+     */
+    @Test
+    public void test12() {
+        boolean exist = userOrderRelationRepository.existsByUserIdAndOrderIdAndUserStatus(1,1,"1");
+        Assertions.assertTrue(exist);
     }
 }

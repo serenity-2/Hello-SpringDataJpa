@@ -20,4 +20,6 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     @Query(value = "select t from User t where t.createTime >= :createTime and t.updateTime <= :updateTime")
     List<User> findByCreateTimeAndUpdateTime(LocalDateTime createTime, LocalDateTime updateTime);
 
+
+
 }

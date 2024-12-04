@@ -1,0 +1,14 @@
+-- CREATE TABLE user_order_relation
+-- (
+--     id            int auto_increment
+--         primary key,
+--     `user_id`     int          not null,
+--     `order_id`    int          not null,
+--     `create_by`   VARCHAR(255) NOT NULL COMMENT '创建者',
+--     `create_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+--     `update_by`   VARCHAR(255) NOT NULL COMMENT '更新者',
+--     `update_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+--     INDEX idx_user_id (user_id)
+-- ) comment '用户订单关系表';
+--
+--

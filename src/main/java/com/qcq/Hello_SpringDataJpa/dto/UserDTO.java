@@ -22,7 +22,7 @@ public class UserDTO implements Serializable {
     /**
      * 用户账号
      */
-    @Column(name = "user_name") // 可不写，默认列明驼峰匹配
+    // 可不写，默认列明驼峰匹配
     private String userName;
     /**
      * 用户昵称

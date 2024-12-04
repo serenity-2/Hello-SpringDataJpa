@@ -1,0 +1,21 @@
+-- CREATE TABLE `order` (
+--                          `id` BIGINT NOT NULL AUTO_INCREMENT,
+--                          `order_id` VARCHAR(255) NOT NULL COMMENT '订单编号',
+--                          `product_id` INT NOT NULL COMMENT '商品ID',
+--                          `product_name` VARCHAR(255) NOT NULL COMMENT '商品名称',
+--                          `product_price` DECIMAL(10, 2) NOT NULL COMMENT '商品价格',
+--                          `create_by` VARCHAR(255) NOT NULL COMMENT '创建者',
+--                          `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+--                          `update_by` VARCHAR(255) NOT NULL COMMENT '更新者',
+--                          `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+--                          PRIMARY KEY (`id`),
+--                          UNIQUE INDEX `idx_order_id` (`order_id`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--
+-- INSERT INTO db2024.`order` (order_id, product_id, product_name, product_price, create_by, create_time, update_by, update_time) VALUES ('X00001', 10000, 'HUAWEI Mate80 Pro', 6999.00, 'qcq', '2024-11-10 19:13:19', 'qcq', '2024-11-10 19:14:30');
+-- INSERT INTO db2024.`order` (order_id, product_id, product_name, product_price, create_by, create_time, update_by, update_time) VALUES ('X00002', 10001, 'HUAWEI WATCH GT7 PRO', 2699.00, 'qcq', '2024-11-10 19:14:30', 'qcq', '2024-11-10 19:14:30');
+-- INSERT INTO db2024.`order` (order_id, product_id, product_name, product_price, create_by, create_time, update_by, update_time) VALUES ('X10003', 10002, 'APPLE Macbook Pro M5', 12500.00, 'qcq', '2024-11-10 19:14:34', 'qcq', '2024-11-10 19:15:45');
+--
+--
+--
+--

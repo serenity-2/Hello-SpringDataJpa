@@ -1,0 +1,10 @@
+CREATE TABLE Student (
+                         id INT PRIMARY KEY AUTO_INCREMENT,
+                         name VARCHAR(255) NOT NULL COMMENT '姓名',
+                         age INT NOT NULL COMMENT '年龄',
+                         sex VARCHAR(3) NOT NULL COMMENT '性别',
+                         create_by VARCHAR(255) COMMENT '创建人',
+                         create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
+                         update_by VARCHAR(255) COMMENT '更新人',
+                         update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '更新时间'
+);

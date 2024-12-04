@@ -1,38 +1,28 @@
 package com.qcq.Hello_SpringDataJpa.domain;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.domain.Auditable;
 
 /**
 * 用户信息表
 * @TableName user
 */
-@Data
-@Accessors(chain = true)
 //@Table(name = "user") 可不写，默认类名驼峰匹配
+@NoArgsConstructor
+@Accessors(chain = true)
 @Entity //作为实体类
  public class User {
 
-    /**
-    * 用户ID
-     * 在javax.persistence.GenerationType中定义了以下几种可供选择的策略：
-     * –IDENTITY：采用数据库ID自增长的方式来自增主键字段，Oracle 不支持这种方式；
-     * –AUTO： JPA自动选择合适的策略，是默认选项；
-     * –SEQUENCE：通过序列产生主键，通过@SequenceGenerator 注解指定序列名，MySql不支持这种方式
-     * –TABLE：通过表产生主键，框架借由表模拟序列产生主键，使用该策略可以使应用更易于数据库移植
-    */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "user_id")
     private Integer userId;
     /**
@@ -87,6 +77,13 @@ import org.springframework.data.domain.Auditable;
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 
+
+   @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+   private List<UserOrderRelation> userOrderRelationList;
+
+   //get set ......
+
+
     /**
      * 保存前设置创建时间，更新时间
      */
@@ -104,4 +101,126 @@ import org.springframework.data.domain.Auditable;
         this.updateTime = LocalDateTime.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public List<UserOrderRelation> getUserOrderRelationList() {
+        return userOrderRelationList;
+    }
+
+    public void setUserOrderRelationList(List<UserOrderRelation> userOrderRelationList) {
+        this.userOrderRelationList = userOrderRelationList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", sex='" + sex + '\'' +
+                ", status='" + status + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", createTime=" + createTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime=" + updateTime +
+                ", userOrderRelationList=" + userOrderRelationList +
+                '}';
+    }
 }
